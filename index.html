@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ethers.io</title>
+        <link rel="stylesheet" type="text/css" href="/styles/index.css" />
+        <link rel="stylesheet" type="text/css" href="/styles/ionicons.css" />
+    </head>
+    <body>
+        <div id="inspect"></div>
+        <div id="templates">
+            <div class="modal-password center">
+                <div class="header"></div>
+                <div><p></p></div>
+                <div>
+                    <div class="input-box password">
+                        <input type="password" />
+                        <div class="input-check bubble-trigger">
+                            <i class="not-ok icon ion-close"><span class="bubble">&nbsp;</span></i>
+                            <i class="ok icon ion-checkmark"></i>
+                        </div>
+                    </div>
+                </div>
+                <div><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-progress center">
+                <div class="header"></div>
+                <div><p></p></div>
+                <div class="progress">
+                    <div class="bar"></div>
+                    <span class="status"><span></span></span>
+                </div>
+                <div class="center"><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-download center">
+                <div class="header">Download Backup Wallet</div>
+                <div><p>
+                    There is <b>NO</b> personal data stored on <i>ethers.io</i> servers.
+                    If you lose this file or forget your password, it is <b>IMPOSSIBLE</b>
+                    to recover your account. If you share this file and your password, stolen
+                    funds <b>CANNOT</b> be recovered.
+                    <span class="warning">Keep this file and your password <u><b>safe</b></u>!</span>
+                </p></div>
+                <div class="button">AGREE & DOWNLOAD WALLET</div>
+                <div class="center"><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-verify-download center">
+                <div class="header"></div>
+                <div><p>
+                    Please select your backup wallet by clicking below, or dragging it into this window from your downloads.
+                </p></div>
+                <div class="dropTarget">Click here or drag your wallet into this window<input type="file" /></div>
+                <div class="center"><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-wallet center">
+                <div class="header">Wallet</div>
+                <div><p>
+                   This tool allows you to send or transfer ether to other accounts or to contracts.
+                </p></div>
+                <div>
+                    <div class="input-box address">
+                        <input type="text" placeholder="(address to send to)" spellcheck="false" />
+                        <div class="input-check bubble-trigger">
+                            <i class="not-ok icon ion-close"><span class="bubble">&nbsp;</span></i>
+                            <i class="ok icon ion-checkmark"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-box amount">
+                        <input type="text" placeholder="(amount of ether to send)" spellcheck="false" />
+                        <div class="input-check bubble-trigger">
+                            <i class="not-ok icon ion-close"><span class="bubble">&nbsp;</span></i>
+                            <i class="ok icon ion-checkmark"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="button disabled"></div>
+                <div class="center"><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-confirm-send center">
+                <div class="header">Confirm Send Transaction</div>
+                <div><p>
+                   Are you sure you wish to send this transaction? Transactions cannot be reversed.
+                </p></div>
+                <div>
+                    <table><tr>
+                        <th>Amount</th>
+                        <td><span class="unit">&Xi;</span> <span class="amount"></span> <span class="estimate-fee glow">(estimating transaction fee)</span></td>
+                    </tr><tr>
+                        <th>From Account:</th>
+                        <td><span class="from-nickname"></span><br /><span class="from-address"></span></td>
+                    </tr><tr>
+                        <th>To Address:</th>
+                        <td><span class="to-address"></span><br /><span class="to-icap-address"></span></td>
+                    </tr><tr class="data">
+                        <th>Data:</th>
+                        <td><span class="data"></span></td>
+                    </tr></table>
+                </div>
+                <div class="button disabled"></div>
+                <div class="center"><span class="cancel">cancel</span></div>
+            </div>
+            <div class="modal-sending center">
+                <div class="header">Sending Transaction</div>
+                <div><p>
+                   Please wait while your transaction is propagating on the Ethereum network.
+                </p></div>
+                <div><i class="spinner icon ion-android-cloud-outline"></i></div>
+                <div><span class="cancel"></span></div>
+            </div>
+            <div class="notice background-light">
+                <div class="title"></div>
+                <div class="message"></div>
+            </div>
+            <div class="account">
+                <div class="option selectable">
+                    <div class="image"><i class="icon ion-checkmark"></i></div>
+                    <span class="label">
+                        <input class="edit-on" type="text" />
+                        <span class="value edit-off"></span><i class="edit-off lock-status icon"></i>
+                    </span>
+                    <span class="actions edit-off">
+                        <i class="edit icon ion-edit"></i>
+                        <i class="download icon ion-arrow-down-a"></i>
+                        <i class="delete icon ion-close"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="no-account">
+                <div class="center">You have no accounts.</div>
+            </div>
+        </div>
+        <div id="interface" class="hover">
+            <div class="background background-light"></div>
+            <div id="logo">
+                <i class="icon ion-logo-wind"></i>
+                <i class="icon ion-logo-cloud"></i>
+            </div>
+            <div class="centerer">
+                <div class="centered" id="modal"></div>
+                <div class="centered" id="wallet">
+                    <div id="with-account">
+                        <div class="header">
+                            <div class="clearfix"></div>
+                            <span class="left populate-address"></span>
+                            <span class="right"> BALANCE</span>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="info">
+                            <div class="clearfix"></div>
+                            <span class="left populate-nickname"></span>
+                            <span class="right"><span class="unit">&Xi;</span>&thinsp;<span class="populate-balance"></span></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div id="without-account">
+                        You do not have any wallets &mdash; <a class="link-account-create">create new account</a> or <a class="link-account-import">import JSON wallet</a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="apps">
+                        <div class="clearfix"></div>
+                        <div class="app" name="wallet">
+                            <div class="image"><i class="icon ion-tnp-wallet"></i></div>
+                            <div class="label"><span>WALLET</span></div>
+                        </div>
+                        <div class="gap"></div>
+                        <div class="app" name="Solidity" url="https://0x09211555086913f351dd453211cd5a8f160f433d.ethers.space/">
+                            <div class="image"><i class="icon ion-ribbon-b"></i></div>
+                            <div class="label"><span>SOLIDITY</span></div>
+                        </div>
+                        <div class="app" name="Testnet Faucet" url="https://0xa5681b1fbda76e0d4ab646e13460a94fdcd3c1c1.ethers.space/">
+                            <div class="image"><i class="icon ion-tnp-faucet"></i></div>
+                            <div class="label"><span>TESTNET FAUCET</span></div>
+                        </div>
+                        <div class="app" name="DevCon2 PoA" url="https://0x2f2ab85f856ec137699cbe5d8038110dd7ce9cbe.ethers.space/">
+                            <div class="image"><i class="icon ion-devcon2"></i></div>
+                            <div class="label"><span>DEVCON2 POA</span></div>
+                        </div>
+                        <div class="app" name="Zen Messenger" url="https://0x123de209782a813a930626c42d7450b3eec6811f.ethers.space/">
+                            <div class="image"><i class="icon ion-tnp-origami"></i></div>
+                            <div class="label"><span>ZEN MESSENGER</span></div>
+                        </div>
+                        <div class="app" name="QR Code" url="https://0x9fe26cb7161049fadc2520de8777ac25b90020c1.ethers.space/">
+                            <div class="image"><i class="icon ion-tnp-qrcode"></i></div>
+                            <div class="label"><span>QR Code</span></div>
+                        </div>
+                        <div class="app" name="Welcome" url="https://0x5543707cc4520f3984656e8edea6527ca474e77b.ethers.space/">
+                            <div class="image"><i class="icon ion-tnp-home"></i></div>
+                            <div class="label"><span>WELCOME</span></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loading-spinner"><i class="icon ion-android-cloud-outline"></i><span>loading application...</span></div>
+        <div id="app"></div>
+        <div id="status" class="background-dark">
+            <div class="centerer content">
+                <div class="centered">
+                    <span id="status-location"></span>
+                    <input type="text" id="status-input-location" placeholder="(click here to enter an Application URL)">
+                    <!--<span id="no-location">(click here to enter an Application URL)</span>-->
+                    <!--<span id="status-location-cancel">cancel</span>-->
+                    <span id="status-info">&nbsp;
+                        <div id="account-bubble-trigger">
+                            <i class="icon ion-ios-gear"></i>
+                            <span class="bubble">
+                                <div id="accounts"></div>
+                                <div class="gap"></div>
+                                <div class="option" id="add-account"> <!-- @TODO use class and same as welcome-->
+                                    <div class="image"><i class="icon ion-android-add-circle"></i></div>
+                                    <span class="label link-account-create">Add New Account</span>
+                                </div>
+                                <div class="option" id="import-wallet">
+                                    <div class="image"><i class="icon ion-archive"></i></div>
+                                    <span class="label link-account-import">Import JSON Wallet</span>
+                                </div>
+                                <!--
+                                <div class="option checkbox enable-metamask" id="checkbox-enable-metamask">
+                                    <div class="toggle"><span><i class="icon ion-checkmark"></i></span></div>
+                                    <span class="label">Enable Metamask</span>
+                                </div>
+                                -->
+                            </span><!--</i>-->
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="notices"></div>
+        <input id="filedrop" type="file" />
+
+        <!-- All of our libraries and utilities -->
+        <script src="/scripts/utils.js" type="text/javascript"></script>
+        <script src="/scripts/ethers-wallet.min.js" type="text/javascript"></script>
+        <script src="/scripts/modal.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            // Lockdown a few key objects
+            utils.defineProperty(window, 'utils', utils);
+            utils.defineProperty(window, 'Wallet', Wallet);
+            utils.defineProperty(window, 'Modal', Modal);
+        </script>
+
+        <!-- The ethers.io application -->
+        <script src="/scripts/index.js" type="text/javascript"></script>
+
+        <!-- Useful library to save items to disk (Thirdparty) -->
+        <script src="/scripts/FileSaver.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            utils.defineProperty(window, 'saveAs', saveAs);
+        </script>
+
+        <!-- Polyfil UTF-8 normalization for passwords (Thirdparty) -->
+        <script src="/scripts/unorm.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            utils.defineProperty(String.prototype, 'normalize', String.prototype.normalize);
+        </script>
+
+    </body>
+</html>

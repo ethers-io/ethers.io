@@ -1,0 +1,132 @@
+@charset "UTF-8";
+/*!
+  Ionicons, v2.0.1
+  Created by Ben Sperry for the Ionic Framework, http://ionicons.com/
+  https://twitter.com/benjsperry  https://twitter.com/ionicframework
+  MIT License: https://github.com/driftyco/ionicons
+
+  Android-style icons originally built by Google’s
+  Material Design Icons: https://github.com/google/material-design-icons
+  used under CC BY http://creativecommons.org/licenses/by/4.0/
+  Modified icons to fit ionicon’s grid from original.
+*/
+@font-face { font-family: "Ionicons"; src: url(/styles/ionicons.woff) format("woff"); font-weight: normal; font-style: normal; }
+.ion, .ionicons, .ion-android-add:before, .ion-android-add-circle:before, .ion-android-cloud-done:before, .ion-android-cloud-outline:before, .ion-android-remove-circle:before, .ion-android-star:before, .ion-android-star-half:before, .ion-android-star-outline:before, .ion-android-upload:before, .ion-android-warning:before, .ion-archive:before, .ion-arrow-down-a:before, .ion-checkmark:before, .ion-clipboard:before, .ion-close:before, .ion-close-circled:before, .ion-code:before, .ion-devcon2:before, .ion-document-text:before, .ion-edit:before, .ion-information-circled:before, .ion-ios-close-empty:before, .ion-ios-gear:before, .ion-ios-list-outline:before, .ion-ios-plus-outline:before, .ion-ios-search-strong:before, .ion-ios-star:before, .ion-ios-star-half:before, .ion-ios-star-outline:before, .ion-load-a:before, .ion-load-b:before, .ion-load-c:before, .ion-load-d:before, .ion-locked:before, .ion-logo:before, .ion-logo-cloud:before, .ion-logo-full:before, .ion-logo-wind:before, .ion-navicon-round:before, .ion-play:before, .ion-ribbon-b:before, .ion-share:before, .ion-shuffle:before, .ion-social-github:before, .ion-stop:before, .ion-tnp-dice:before, .ion-tnp-faucet:before, .ion-tnp-fortune-cookie:before, .ion-tnp-home:before, .ion-tnp-identity:before, .ion-tnp-list:before, .ion-tnp-origami:before, .ion-tnp-qrcode:before, .ion-tnp-settings:before, .ion-tnp-tokens:before, .ion-tnp-wallet:before, .ion-unlocked:before, .ion-upload:before { display: inline-block; font-family: "Ionicons"; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; text-rendering: auto; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+.ion-android-add:before { content: ""; }
+
+.ion-android-add-circle:before { content: ""; }
+
+.ion-android-cloud-done:before { content: ""; }
+
+.ion-android-cloud-outline:before { content: ""; }
+
+.ion-android-remove-circle:before { content: ""; }
+
+.ion-android-star:before { content: ""; }
+
+.ion-android-star-half:before { content: ""; }
+
+.ion-android-star-outline:before { content: ""; }
+
+.ion-android-upload:before { content: ""; }
+
+.ion-android-warning:before { content: ""; }
+
+.ion-archive:before { content: ""; }
+
+.ion-arrow-down-a:before { content: ""; }
+
+.ion-checkmark:before { content: ""; }
+
+.ion-clipboard:before { content: ""; }
+
+.ion-close:before { content: ""; }
+
+.ion-close-circled:before { content: ""; }
+
+.ion-code:before { content: ""; }
+
+.ion-devcon2:before { content: ""; }
+
+.ion-document-text:before { content: ""; }
+
+.ion-edit:before { content: ""; }
+
+.ion-information-circled:before { content: ""; }
+
+.ion-ios-close-empty:before { content: ""; }
+
+.ion-ios-gear:before { content: ""; }
+
+.ion-ios-list-outline:before { content: ""; }
+
+.ion-ios-plus-outline:before { content: ""; }
+
+.ion-ios-search-strong:before { content: ""; }
+
+.ion-ios-star:before { content: ""; }
+
+.ion-ios-star-half:before { content: ""; }
+
+.ion-ios-star-outline:before { content: ""; }
+
+.ion-load-a:before { content: ""; }
+
+.ion-load-b:before { content: ""; }
+
+.ion-load-c:before { content: ""; }
+
+.ion-load-d:before { content: ""; }
+
+.ion-locked:before { content: ""; }
+
+.ion-logo:before { content: ""; }
+
+.ion-logo-cloud:before { content: ""; }
+
+.ion-logo-full:before { content: ""; }
+
+.ion-logo-wind:before { content: ""; }
+
+.ion-navicon-round:before { content: ""; }
+
+.ion-play:before { content: ""; }
+
+.ion-ribbon-b:before { content: ""; }
+
+.ion-share:before { content: ""; }
+
+.ion-shuffle:before { content: ""; }
+
+.ion-social-github:before { content: ""; }
+
+.ion-stop:before { content: ""; }
+
+.ion-tnp-dice:before { content: ""; }
+
+.ion-tnp-faucet:before { content: ""; }
+
+.ion-tnp-fortune-cookie:before { content: ""; }
+
+.ion-tnp-home:before { content: ""; }
+
+.ion-tnp-identity:before { content: ""; }
+
+.ion-tnp-list:before { content: ""; }
+
+.ion-tnp-origami:before { content: ""; }
+
+.ion-tnp-qrcode:before { content: ""; }
+
+.ion-tnp-settings:before { content: ""; }
+
+.ion-tnp-tokens:before { content: ""; }
+
+.ion-tnp-wallet:before { content: ""; }
+
+.ion-unlocked:before { content: ""; }
+
+.ion-upload:before { content: ""; }
+
+
