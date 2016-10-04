@@ -1026,7 +1026,6 @@ function Interface(abi) {
                 break;
         }
 
-        console.log(method.name);
         utils.defineProperty(this, method.name, func);
     }, this);
 

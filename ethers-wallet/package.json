@@ -4,7 +4,7 @@
   "description": "This is a modified version of ethers-wallet that supports ethers.io and apps as a client-server model.",
   "main": "index.js",
   "dependencies": {
-      "ethers-wallet": "1.0.2"
+      "ethers-wallet": "1.0.5"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
