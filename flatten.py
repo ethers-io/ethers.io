@@ -12,6 +12,7 @@ if python == 2:
 
 import base64
 import codecs
+import hashlib
 import os
 import re
 import subprocess
@@ -22,8 +23,6 @@ reJpg = re.compile('url\\(([^)]+.jpg)\\)')
 rePng = re.compile('url\\(([^)]+.png)\\)')
 reGif = re.compile('url\\(([^)]+.gif)\\)')
 reWoff = re.compile('url\\(([^)]+.woff)\\)')
-
-reDevOnly = re.compile('<DEV-ONLY>((?:.|\n)*?)</DEV-ONLY>')
 
 def inlinify_script(match):
 
@@ -88,5 +87,15 @@ html = reGif.sub(inlinify_gif, html)
 
 #html = reDevOnly.sub('PRODUCTION', html);
 
-open('./dist/index.html', 'wb').write(html.encode('utf8'))
-print("html", "./dist/index.html", len(html))
+EthersHashTag = '<ETHERS_HASH>'
+data = html.replace(EthersHashTag, '').encode('utf8')
+if len(data) + len(EthersHashTag) != len(html.encode('utf8')):
+    raise Exception('ETHERS_HASH conversion bug')
+
+ethersHash = hashlib.sha256(data).hexdigest()
+
+data = html.replace(EthersHashTag, ethersHash).encode('utf8');
+
+open('./dist/index.html', 'wb').write(data)
+print("hash: " + ethersHash)
+print("html", "./dist/index.html", len(data))
