@@ -147,4 +147,35 @@
 
     utils.defineEventEmitter(Store.prototype);
 
+    utils.defineProperty(utils, 'gethFilename', (function() {
+        function zpad(value) {
+            value = String(value);
+            if (value.length != 2) { value = '0' + value; }
+            return value;
+        }
+
+        return function(address, now) {
+            if (!address.match(/^0x[0-9A-Fa-f]{40}$/)) {
+                throw new Error('invalid address');
+            }
+            address = address.substring(2).toLowerCase();
+
+            if (!now) { now = new Date(); }
+
+            var date = [
+                now.getUTCFullYear(),
+                zpad(now.getUTCMonth() + 1),
+                zpad(now.getUTCDate())
+            ].join('-');
+
+            var time = [
+                zpad(now.getUTCHours()),
+                zpad(now.getUTCMinutes()),
+                zpad(now.getUTCSeconds())
+            ].join('-');
+
+            return ('UTC--' + date + 'T' + time + '.0Z--' + address)
+        }
+    })());
+
 })(this);
