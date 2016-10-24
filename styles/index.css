@@ -133,7 +133,6 @@ input {
 }
 #interface .background {
     height: 100%; 
-    opacity: 0.9;
     position: absolute;
     transition: opacity 0.2s ease-in-out 0.1s;
     width: 100%;
@@ -145,10 +144,11 @@ input {
     transition: height 0.2s ease-out 0.2s;
 }
 
+/*
 #interface.hover:hover .background {
-    opacity: 0.9;
+    ddd-opacity: 0.9;
 }
-
+*/
 
 /**
  *   Interface - Modal
@@ -1048,7 +1048,7 @@ input {
     position: fixed;
     left: 0px;
     right: 0px;
-    top: 0px;
+    top: 75px;
     transition: opacity 0.5s linear;
     z-index: 1;
 }
