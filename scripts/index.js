@@ -1047,7 +1047,7 @@
             return modalPushPassword(
                 'Create New Account',
                 'Please choose your password, which <b>must be at least 6 characters</b> long.',
-                '(choose pssword)',
+                '(choose password)',
                 function(password) {
                     if (password.length >= 6) { return ''; }
                     return 'Your password is too short.'
