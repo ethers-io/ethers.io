@@ -1,0 +1,849 @@
+/* Custom Font; see ./static/font-build */
+/*
+@font-face {
+    font-family: "ethers";
+    src: rl(./ethers.woff) format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+*/
+.icon-logo:before      { content: "L"; }
+.icon-logo             { transform: translateY(15%); }
+.icon-plus:before      { content: "A"; }
+.icon-plus             { transform: translateY(12%); }
+.icon-remove:before    { content: "R"; }
+.icon-remove           { transform: translateY(8%); }
+.icon-edit:before      { content: "E"; }
+.icon-edit             { transform: translateY(7%); }
+.icon-download:before  { content: "G"; }
+.icon-download         { transform: translateY(9%); }
+.icon-wallet:before    { content: "W"; }
+.icon-locked           { transform: translateY(1%); }
+.icon-home:before      { content: "H"; }
+.icon-info:before      { content: "I"; }
+
+
+
+html {
+    margin: 0;
+}
+
+body {
+    background-color: #eee;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+.icon {
+    display: inline-block;
+    font-family: "ethers";
+    speak: none;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-big {
+    font-size: 40px;
+}
+
+.icon-medium {
+    font-sie: 20px;
+}
+
+.button a {
+    cursor: pointer;
+}
+
+.blurb {
+    text-align: center;
+}
+
+#templates {
+    display: none;
+}
+
+#header {
+    background: #2878e8;
+    border-bottom: 2px solid #eaf2fd;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    color: #eaf2fd;
+    height: 600px;
+    left: 0px;
+    overflow: hidden;
+    position: fixed;
+    right: 0px;
+    transform: translateY(-550px);
+}
+
+body.animated #header {
+    transition: transform 0.5s ease-out;
+}
+
+@keyframes drift {
+    0% {
+        transform: scale(1, 1);
+    }
+    100% {
+        transform: scale(5, 1);
+    }
+}
+
+#header > img {
+    border: 1px solid green;
+    position: absolute;
+    right: 300px;
+    bottom: 5px;
+    dddopacity: 0.2;
+    animation: drift 15s infinite;
+    tranform-origin: right center;
+    transition: transform 0.3s linear;
+}
+
+#logo {
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    left: 46px;
+    line-height: 30px;
+    position: fixed;
+    text-align: center;
+    top: 10px;
+    width: 30px;
+}
+
+#logo .icon {
+    cursor: pointer;
+    position: relative;
+}
+
+#logo .button {
+    border-top: 1px solid #333;
+    cursor: pointer;
+    margin-top: 15px;
+    opacity: 0.75;
+    padding-top: 8px;
+    transition: opacity 0.1s linear 0.1s;
+}
+
+#logo .button:hover {
+    opacity: 1;
+    transition: opacity 0.1s linear;
+}
+
+#logo .accounts .account .nickname {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    opacity: 0.75;
+    outline: none;
+    padding: 4px 5px;
+    transition: opacity 0.1s linear 0.1s;
+    width: 180px;
+}
+
+#logo .accounts .account.selected .nickname {
+    opacity: 1;
+}
+
+#logo .accounts .account:hover .nickname {
+    opacity: 1;
+    transition: opacity 0.1s linear;
+}
+
+#logo .accounts .account .lock-state {
+    color: #b7f1be;
+    font-size: 12px;
+}
+#logo .accounts .account .lock-state:before { content: "U"; }
+
+#logo .accounts .account .lock-state.locked {
+    color: #f4b5b6;
+    font-size: 12px;
+}
+#logo .accounts .account .lock-state.locked:before { content: "S"; }
+
+body.editing-account #account-list {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+#account-list {
+    background: #555;
+    border: 2px solid #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #000;
+    color: #fff;
+    display: inline-block;
+    left: -25px;
+    opacity: 0;
+    padding: 102px 25px 15px;
+    position: absolute;
+    pointer-events: none;
+    transform: scale(0.25);
+    transform-origin: 10px 120px;
+    transition: opacity 0.2s linear 0.3s, transform 0.2s ease-out 0.3s;
+    top: -100px;
+    min-width: 330px;
+}
+
+body.animated #logo:hover #account-list {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+#account-list .title {
+    border-bottom: 1px solid #333;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+body.no-account #account-list .accounts {
+    display: none;
+}
+
+#account-list .accounts > div {
+    margin-bottom: 7px;
+    line-height: 30px;
+    white-space: nowrap;
+}
+
+#account-list .no-accounts {
+}
+
+body:not(.no-account) #account-list .no-accounts {
+    display: none;
+}
+
+#account-list .accounts .account .nickname {
+    cursor: pointer;
+}
+
+#account-list .accounts .account .action {
+    cursor: pointer;
+    margin-left: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s linear;
+}
+
+#account-list .accounts .account.selected.metamask .action {
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+#account-list .accounts .account .action .icon {
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+#account-list .accounts .account.selected .nickname {
+    opactiy: 1;
+}
+
+#account-list .accounts .account.selected .action {
+    opacity: 0.5;
+    pointer-events: auto;
+}
+
+#account-list .accounts .account.selected .action:hover {
+    opacity: 1;
+}
+
+#account-list .button {
+}
+
+#cancel {
+    border: 2px solid #fff;
+    border-radius: 17px;
+    box-sizing: content-box;
+    color: #fff;
+    font-size: 24px;
+    height: 30px;
+    line-height: 28px;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    right: 16px;
+    text-align: center;
+    top: 16px;
+    width: 30px;
+}
+
+body.animated #cancel {
+    transition: opacity 0.5s linear;
+}
+
+#cancel:hover {
+    background-color: #fff;
+    color: #2878e8;
+    cursor: pointer;
+}
+
+#cancel.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.animated #logo {
+    transition: opacity 0.3s linear, transform 0.3s ease-out;
+}
+
+#logo.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.001);
+}
+
+#controllers {
+    display: inline-block;
+    transform: translateY(550px);
+    width: 100%;
+}
+
+body.animated #controllers {
+    transition: transform 0.5s ease-out;
+}
+
+#controllers > div {
+    left: 50%;
+    padding: 16px 0;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: 800px;
+}
+
+#controllers > div > div {
+    padding-bottom: 30px;
+}
+
+#controllers > div > div:last-child {
+    padding-bottom: 20px;
+}
+
+body.animated #controllers > div {
+    transition: opacity 0.5s linear, transform 0.5s ease-out;
+}
+
+#controllers > div.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#controllers > .left {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-90%);
+}
+
+#controllers > .right {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-10%);
+}
+
+.fullscreen {
+    bottom: 50px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 52px;
+}
+
+#app-container.blur {
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+body.animated #app-container {
+    transition: opacity 0.5s linear;
+}
+
+#app-container iframe {
+    background-color: #fff;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+#footer {
+    background: #555;
+    border-top: 2px solid #000;
+    bottom: 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    height: 50px;
+    left: 0;
+    position: fixed;
+    right: 0;
+}
+
+#footer .address-bar-container {
+    height: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+}
+
+#footer .button a {
+    background-color: #fff;
+    border-radius: 18px;
+    color: #444;
+    height: 36px;
+    line-height: 36px;
+    bottom: 7px;
+    position: fixed;
+    text-align: center;
+    width: 36px;
+}
+
+#footer .button a.wallet {
+    font-size: 26px;
+    left: 94px;
+}
+
+#footer .button a.home {
+    font-size: 22px;
+    left: 46px;
+}
+
+#footer .address-bar {
+    position: relative;
+}
+
+#footer .address-bar input {
+    background-color: transparent;
+    border: none;
+    box-sizing: content-box;
+    color: #fff;
+    cursor: pointer;
+    float: left;
+    font-size: 18px;
+    line-height: 30px;
+    height: 30px;
+    margin-top: 8px;
+    outline: none;
+    padding: 2px 0;
+    width: 600px;
+}
+
+#footer .address-bar input:focus {
+    opacity: 0.8;
+}
+
+#footer .address-bar input:focus.matches {
+    opacity: 1;
+}
+
+#footer .address-bar span {
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    font-size: 18px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 8px;
+    padding: 2px 2px 2px 0;
+}
+
+#footer .address-bar div {
+    background-color: #fff;
+    border-radius: 17px;
+    color: #333;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    height: 34px;
+    float: right;
+    line-height: 34px;
+    margin-top: 8px;
+    opacity: 0;
+    text-align: center;
+    transition: opacity 0.2s linear;
+    width: 34px;
+}
+
+body.editing-url #footer .address-bar div {
+    opacity: 1;
+}
+
+.unit {
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+
+.decimal {
+    font-size: 0.87em;
+}
+
+#controllers .title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 28px;
+}
+
+#controllers .title span {
+    border-bottom: 1px solid #69a1ef;;
+    padding: 0 55px 4px;
+}
+
+#controllers .button {
+    font-size: 18px;
+    font-weight: bold;
+    ddd-padding: 0px 0 10px;
+    text-align: center;
+    dddmargin-bottom: 10px;
+}
+
+#controllers .button a {
+    background-color: #fff;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    color: #2878e8;
+    display: inline-block;
+    line-height: 20px;
+    padding: 8px 40px;
+    text-decoration: none;
+    width: 250px;
+}
+
+#controllers .button a:hover {
+    background-color: #2878e8;
+    color: #fff;
+}
+
+#controllers .button a.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+
+/* This controller slides up */
+
+#controllers .nav-wallet.left {
+    transform: translate(-50%, -50px);;
+}
+
+#controllers > div.nav-wallet > div {
+    padding-bottom: 0;
+}
+
+.nav-wallet .info {
+    float: left;
+    position: relative;
+    width: 400px;
+}
+
+.nav-wallet .address input {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-family: monospace;
+    dddfont-weight: bold;
+    font-size: 14px;
+    height: 22px;
+    line-height: 22px;
+    outline: none;
+    padding: 2px 0;
+    width: 100%;
+}
+
+.nav-wallet .nickname {
+    background-color: #2878e8;
+    font-size: 17px;
+    font-weight: bold;
+    position: absolute;
+    height: 26px;
+    line-height: 26px;
+    top: -2px;
+    transition: opacity 0.2s linear;
+    width: 100%;
+}
+
+body:not(.locked) .nav-wallet .info:hover .nickname {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s linear 0.6s;
+}
+
+.nav-wallet .balance {
+    float: right;
+    font-family: sans-serif;
+    font-size: 22px;
+    line-height: 22px;
+}
+
+.nav-wallet .info .onboard .add-account {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.nav-wallet .info .onboard .add-account:hover {
+    opacity: 1;
+}
+
+.nav-wallet .info .onboard {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+body.no-account .nav-wallet .info .address {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.no-account .nav-wallet .info .nickname {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.no-account .nav-wallet .info .onboard {
+    display: block;
+}
+
+body.no-account .nav-wallet .balance {
+    display: none;
+}
+
+.options-container .arrow {
+    opacity: 0;
+    position: absolute;
+    transform: translateX(-200%);
+    transition: opacity 0.3s linear;
+}
+
+.options-container:hover .arrow {
+    opacity: 0.5;
+}
+
+#controllers .options-container {
+    border: 1px solid #aaa;
+    height: 26px;
+    overflow-y: hidden;
+    position: relative;
+    transform: translate(-14px, -1px);
+}
+
+#controllers .options-container:hover {
+    overflow: visible;
+}
+
+#controllers .options-container .options {
+    background-color: #2878e8;
+    border: 1px solid transparent;
+    position: relative;
+    transform: translate(0, -1px);
+    transition: transform 0.3s ease-out;
+}
+
+#controllers .options-container:hover .options {
+    border: 1px solid white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#controllers .options-container .options .option {
+    cursor: pointer;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 12px;
+    width: 100%;
+}
+
+#controllers .options-container:hover .options .option {
+    border-bottom: 1px solid #fff;
+}
+
+#controllers .options-container:hover .options .option:last-child {
+    border-bottom: none;
+}
+
+#controllers .options-container .options .option:hover {
+    background-color: #fff;
+    color: #2878e8;
+}
+
+#controllers table {
+    color: #eaf2fd;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+}
+
+.option i {
+    padding-right: 100px;
+}
+
+.option .price {
+    display: inline-block;
+    font-family: monospace;
+    padding-right: 12px;
+    position: absolute;
+    right: 0;
+}
+
+#controllers table th {
+    text-align: left;
+    line-height: 24px;
+    padding-right: 50px;
+    white-space: nowrap;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+#controllers table td {
+    line-height: 24px;
+}
+
+#controllers .input-container {
+    border: 2px solid #eaf2fd;
+    border-radius: 100px;
+    margin-left: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    transform: translateX(-50%);
+    width: 400px;
+}
+
+#controllers .input-container input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    height: 32px;
+    line-height: 20px;
+    outline: none;
+    padding: 3px 6px;
+    text-align: center;
+    width: 100%;
+}
+
+#controllers .input-container .info {
+    position: absolute;
+    right: -45px;
+    line-height: 20px;
+    dddheight: 20px;
+    padding: 5px 0;
+    text-align: center;
+    top: 0;
+    width: 30px;
+    
+}
+
+#controllers .textarea-container {
+    border: 2px solid #eaf2fd;
+    border-radius: 100px;
+    padding: 0 15px;
+    margin-left: 50%;
+    position: relative;
+    transform: translateX(-50%);
+    width: 400px;
+}
+
+#controllers .textarea-container textarea {
+    ddd-background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    height: 32px;
+    line-height: 20px;
+    outline: none;
+    padding: 3px 6px;
+    width: 100%;
+}
+
+.nav-progress .progress-container {
+    border: 2px solid #eaf2fd;
+    border-radius: 100px;
+    display: inline-block;
+    margin-left: 50%;
+    padding: 2px;
+    transform: translateX(-50%);
+    width: 400px
+}
+
+.nav-progress .progress-bar {
+    background-color: #679ce5;
+    border: 1px solid #222233;
+    border-radius: 100px;
+    box-sizing: border-box;
+    display: inline-block;
+    overflow: hidden;
+    padding: 10px 0;
+    position: relative;
+}
+
+.nav-progress .percent {
+    font-weight: bold;
+    left: 0;
+    padding: 10px 0;
+    position: absolute;
+    top: 3px;
+    text-align: center;
+    width: 100%;
+}
+
+.nav-progress .progress-bar.complete {
+    background-color: #67e591;
+    border: 1px solid #223325;
+}
+
+.nav-progress .progress-bar .highlight {
+    background-color: #fff;
+    height: 50%;
+    left: 0;
+    opacity: 0.2;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+/* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
+    color: white;
+    font-style: italic;
+    opacity: 0.5;
+}
+
+/* Firefox 19+ */
+::-moz-placeholder {
+    color: white;
+    font-style: italic;
+    opacity: 0.5;
+}
+
+/* IE 10+ */
+:-ms-input-placeholder {
+    color: white;
+    font-style: italic;
+    opacity: 0.5;
+}
+
+/* Firefox 18- */
+:-moz-placeholder {
+    color: white;
+    font-style: italic;
+    opacity: 0.5;
+}
