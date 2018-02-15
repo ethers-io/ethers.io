@@ -1,0 +1,252 @@
+<html>
+    <head>
+        <title>Welcome</title>
+        <style type="text/css">
+            body {
+                font-family: sans-serif;
+                padding: 30px 0px;
+            }
+
+            .clearfix {
+                clear: both;
+            }
+
+            .content {
+                margin-left: 50%;
+                transform: translateX(-50%);
+                width: 800px;
+            }
+
+            .hr {
+                height: 0px;
+                border-bottom: 2px solid #888;
+                margin: 50px 0;
+            }
+
+            .dapp {
+                border: 1px solid #666;
+                border-radius: 10px;
+                box-sizing: border-box;
+                cursor: pointer;
+                float: left;
+                height: 160px;
+                margin-right: 20px;
+                overflow: hidden;
+                padding: 20px 15px;
+                position: relative;
+                text-align: center;
+                width: 160px;
+            }
+
+            .dapp span {
+                background-color: rgba(0, 0, 0, 0.6);
+                bottom: 0px;
+                color: #fff;
+                display: block;
+                font-weight: bold;
+                left: 0;
+                line-height: 40px;
+                position: absolute;
+                width: 100%;
+            }
+
+            .example code {
+                border: 1px solid #888;
+                margin-bottom: 40px;
+                overflow: scroll;
+                padding: 15px;
+                white-space: pre;
+                width: 360px;
+            }
+
+            .example .heading {
+                font-weight: bold;
+                padding: 0 0 8px 30px;
+                text-align: right;
+                width: 360px;
+            }
+
+            .example code .nochange {
+                opacity: 0.5;
+            }
+
+            .example code .added {
+                background: #efe;
+                color: #090;
+            }
+
+            .example .before {
+               float: left;
+            }
+
+            .example .after {
+               float: right;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <h1>Welcome to Ethers</h1>
+            <p>
+                Ethers is an Ethereum Wallet and dApp Browser for your Web Browser.
+            </p>
+            <p>
+                Every dApp is isolated from each other and from the Ethers Wallet
+                Container, keeping your private keys safe while making dApps
+                easy to use and share.
+            </p>
+            <p>
+                Ethers works with Web3 dApps as well as dApps that use the Ethers API.
+                It also plays nice with MetaMask and any other injected Web3 environment.
+            </p>
+
+            <div class="hr"></div>
+
+            <h2>Featured dApps</h2>
+            <div class="clearfix"></div>
+            <p>
+                <a class="dapp" style="background: url(./images/icon-zenmessenger.png); background-size: contain" href="https://0x123de209782a813a930626c42d7450b3eec6811f.ethers.space/"><span>Zen Messenger</span></a>
+                <a class="dapp" style="background: url(./images/icon-devcon2-poa.png); background-size: contain" href="https://0x2f2ab85f856ec137699cbe5d8038110dd7ce9cbe.ethers.space/"><span>DevCon 2 PoA</span></a>
+            </p>
+            <div class="clearfix"></div>
+
+            <div class="hr"></div>
+
+            <h2>Developer dApps</h2>
+            <div class="clearfix"></div>
+            <div class="dapps">
+                <a class="dapp" style="background: url(./images/icon-remix.png); background-size: contain" href="https://remix.ethers.space"><span>Remix IDE</span></a>
+                <a class="dapp" style="background: url(./images/icon-faucet.png); background-size: contain" href="https://0xa5681b1fbda76e0d4ab646e13460a94fdcd3c1c1.ethers.space/"><span>Testnet Faucet</span></a>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="hr"></div>
+
+            <h2>Ahoy, Developers!</h2>
+            <p>
+                We have created a simple to use Web3 Provider Bridge as a single JavaScript file,
+                which enables the Ethers Browser to work, as well as automatically detect other
+                injected Web3 environments, such as MetaMask, Ethers Wallet and Cipher Browser.
+            </p>
+            <p>
+                The <b>Ethers App Library</b> makes it easy to write dApps that work <i>anywhere</i>.
+            </p>
+            <p>
+                Ethers makes it easy to share links directly to your dApps, securely and privately,
+                automatically detecting a user's Ethereum environment (Ethers? MetaMask? Mist?) and
+                creating one if necessary, so your dApp does not need to worry. All functionality is
+                exposed as both the Web3 API and the Ethers App API.
+            </p>
+            <p>
+                Please check out our <a href="https://docs.ethers.io/ethers-app/html/">documentation</a>.
+            </p>
+            <div class="example">
+                <h3>Example: Enabling Remix</h3>
+                <div class="clearfix"></div>
+                <div class="before heading">Before</div>
+                <div class="after heading">After</div>
+                <div class="clearfix"></div>
+                <code class="before"><span class="nochange">&lt;!DOCTYPE html&gt
+
+&lt;html&gt
+    &lt;head&gt
+        &lt;meta charset="utf-8"&gt
+        &lt;meta http-equiv="X-UA-Compatible" content="chrome=1"&gt
+        &lt;title&gtRemix - Solidity IDE&lt;/title&gt
+        &lt;link rel="stylesheet" href="assets/css/pygment_trac.css"&gt
+        &lt;link rel="stylesheet" href="assets/css/font-awesome.min.css"&gt
+        &lt;link rel="icon" type="x-icon" href="icon.png"&gt
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"&gt
+    &lt;/head&gt
+    &lt;body&gt
+
+        &lt;script src="build/app.js"&gt&lt;/script&gt
+    &lt;/body&gt
+&lt;/html&gt</span></code>
+                <code class="after"><span class="nochange">&lt;!DOCTYPE html&gt
+
+&lt;html&gt
+    &lt;head&gt
+        &lt;meta charset="utf-8"&gt
+        &lt;meta http-equiv="X-UA-Compatible" content="chrome=1"&gt
+        &lt;title&gtRemix - Solidity IDE&lt;/title&gt
+        &lt;link rel="stylesheet" href="assets/css/pygment_trac.css"&gt
+        &lt;link rel="stylesheet" href="assets/css/font-awesome.min.css"&gt
+        &lt;link rel="icon" type="x-icon" href="icon.png"&gt
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"&gt
+    &lt;/head&gt
+    &lt;body&gt</span>
+<span class="added">        &lt;script src="https://cdn.ethers.io/scripts/ethers-app-v0.4.js"&gt&lt;/script&gt</span>
+<span class="nochange">        &lt;script src="build/app.js"&gt&lt;/script&gt
+    &lt;/body&gt
+&lt;/html&gt</span></code>
+                <div class="clearfix"></div>
+            </div>
+            <div class="example">
+                <h3>Example: Standard Web3 App</h3>
+                <div class="clearfix"></div>
+                <div class="before heading">Before</div>
+                <div class="after heading">After</div>
+                <div class="clearfix"></div>
+                <code class="before">&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;script src="/scripts/web3.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+      // https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md
+      window.addEventListener('load', function() {
+
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+        if (typeof web3 !== 'undefined') {
+          // Use Mist/MetaMask's provider
+          web3js = new Web3(web3.currentProvider);
+        } else {
+          console.log('No web3? You should consider trying MetaMask!')
+          // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+          web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+
+        // Now you can start your app & access web3 freely:
+        startApp()
+      })
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code>
+                <code class="after">&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;!-- Optional; only required if you require the Web API --&gt;
+    &lt;script src="/scripts/web3.js"&gt;&lt;/script&gt;
+
+    &lt;!-- Loads and connects to the Ethereum network --&gt;
+    &lt;script src="https://cdn.ethers.io/scripts/ethers-app-v0.4.js"&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+      ethers.onready = function() {
+          startApp();
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <script src="https://cdn.ethers.io/scripts/ethers-app-v0.4.js"></script>
+        <script>
+             Array.prototype.forEach.call(document.body.querySelectorAll('a'), function(a) {
+                 var href = a.getAttribute('href');
+                 a.onclick = function(event) {
+                     event.stopPropagation()
+                     event.preventDefault();
+
+                     ethers.loadApplication(href).catch(function(error) {
+                         console.log('Failed to load.', href, error);
+                     });
+                 };
+             });
+        </script>
+    </body>
+</html>
+
