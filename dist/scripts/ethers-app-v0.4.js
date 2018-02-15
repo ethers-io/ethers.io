@@ -63,10 +63,12 @@ function proxyObject(object, deferProperties, chainProperties, syncProperties) {
     });
 
     syncProperties.forEach(function(property) {
-        utils.defineProperty(object, property, function() {
-            if (!proxyTarget) { throw new Error('cannot access property before connection: ' + property); }
-            var args = Array.prototype.slice.call(arguments);
-            return proxyTarget[property].apply(proxyTarget, args);
+        Object.defineProperty(object, property, {
+            enumerable: true,
+            get: function() {
+                if (!proxyTarget) { throw new Error('cannot access property before connection: ' + property); }
+                return proxyTarget[property];
+            }
         });
     });
 
@@ -105,8 +107,9 @@ var setProviderProxyTarget = proxyObject(provider, [
 ], [
     'listenerCount',
     'listeners',
-    'network',
     'chainId',
+    'ensAddress',
+    'name',
 ]);
 
 
