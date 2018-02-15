@@ -17,7 +17,8 @@ import os
 import re
 import subprocess
 
-UGLIFY = False
+UGLIFY = True
+#UGLIFY = False
 
 reScript = re.compile('<script(?:[^>]+)src="([^"]*)"(?:[^>]*)>((?:.|\n)*?)</script>')
 reStyle = re.compile('<link(?:[^>]+)href="([^"]*)"(?:[^>]*)/(?:[^>]*)>')
