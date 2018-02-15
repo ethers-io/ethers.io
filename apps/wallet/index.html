@@ -195,6 +195,10 @@
             }
 
             table.history td.amount a {
+                color: #888;
+            }
+
+            table.history td.amount a.positive {
                 color: #3a3;
             }
 
@@ -345,13 +349,23 @@
                         decimalLength = Math.max(comps[1].length, decimalLength);
                     });
 
+                    // In case we have a negative sign
+                    wholeLength++;
+
+                    // We only show 5 decimal places
+                    if (decimalLength > 5) { decimalLength = 5; }
+
+                    var padWholeLength = Math.max(decimalLength, wholeLength);
+                    decimalLength = padWholeLength;
+console.log(decimalLength, padWholeLength, wholeLength);
                     // Populate the aligned amounts
                     history.forEach(function(tx) {
                         var negative = false;
-                        var comps = ethersApp.formatEther(tx.value).split('.');
+                        var ether = ethersApp.formatEther(tx.value);
+                        var comps = ether.split('.');
 
                         // Pad (left) with nbsp
-                        while (comps[0].length < wholeLength) { comps[0] = nbsp + comps[0]; }
+                        //while (comps[0].length < wholeLength) { comps[0] = nbsp + comps[0]; }
 
                         // Longer than 5 characters, so round to 5 characters
                         comps[1] = round5(comps[1]);
@@ -359,13 +373,22 @@
                         // Pad (right) with nbsp
                         while (comps[1].length < decimalLength) { comps[1] = comps[1] + nbsp; }
 
-                        if (tx.from === address) {
+                        if (tx.from === address && ether !== '0.0') {
                             comps[0] = '-' + comps[0];
+                            tx.sign = 'negative';
                         } else {
                             comps[0] = nbsp + comps[0];
+                            tx.sign = 'positive';
                         }
 
-                        tx.ether = comps.join('.') + nbsp;;
+                        // Pad (left) with nbsp
+                        while (comps[0].length < padWholeLength) { comps[0] = nbsp + comps[0]; }
+
+                        if (ether === '0.0') {
+                            tx.sign = null;
+                        }
+
+                        tx.ether = nbsp + comps.join('.') + nbsp;;
                     });
 
                     var trs = Array.prototype.slice.call(tableBody.querySelectorAll('tr'));
@@ -433,8 +456,8 @@
                         a.setAttribute('target', '_blank');
 
                         var a = addTd(tx.ether, 'amount');
-                        if (tx.ether.substring(0, 1) === '-') {
-                            a.classList.add('negative');
+                        if (tx.sign) {
+                            a.classList.add(tx.sign);
                         }
 
                         tableBody.insertBefore(tr, nextTr);
