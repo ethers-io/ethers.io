@@ -3,7 +3,7 @@
 'use strict';
 
 // @TODO: Once we collapse the umbrella package, we can simplify this
-var Contracts = require('ethers-contracts/contract');
+var Contract = require('ethers-contracts/contract');
 var providers = require('ethers-providers');
 var utils = require('ethers-utils');
 
@@ -32,7 +32,100 @@ function ethersLog() {
     console.log.apply(console, args);
 }
 
+function proxyObject(object, deferProperties, chainProperties, syncProperties) {
+    var setProxy = null;
+    var proxyTarget = null;
+    var proxyPromise = new Promise(function(resolve) {
+        setProxy = function(value) {
+            proxyTarget = value;
+            resolve(proxyTarget);
+            setProxy = null;
+        }
+    });
+
+    deferProperties.forEach(function(property) {
+        utils.defineProperty(object, property, function() {
+            var targetArgs = Array.prototype.slice.call(arguments);
+            return proxyPromise.then(function(proxyTarget) {
+                return proxyTarget[property].apply(proxyTarget, targetArgs);
+            });
+        });
+    });
+
+    chainProperties.forEach(function(property) {
+        utils.defineProperty(object, property, function() {
+            var targetArgs = Array.prototype.slice.call(arguments);
+            proxyPromise.then(function(proxyTarget) {
+                proxyTarget[property].apply(proxyTarget, targetArgs);
+            });
+            return object;
+        });
+    });
+
+    syncProperties.forEach(function(property) {
+        utils.defineProperty(object, property, function() {
+            if (!proxyTarget) { throw new Error('cannot access property before connection: ' + property); }
+            var args = Array.prototype.slice.call(arguments);
+            return proxyTarget[property].apply(proxyTarget, args);
+        });
+    });
+
+    utils.defineProperty(object, 'ready', function() {
+        return proxyPromise.then(function(proxyTarget) {
+            return null;
+        });
+    });
+
+    return setProxy;
+}
+
+
+function Provider() { }
+var provider = new Provider();
+var setProviderProxyTarget = proxyObject(provider, [
+    'getBlockNumber',
+    'getGasPrice',
+    'getBalance',
+    'getTransactionCount',
+    'getCode',
+    'getStorageAt',
+    'call',
+    'estimateGas',
+    'getBlock',
+    'getTransaction',
+    'getTransactionReceipt',
+    'getLogs',
+    'resolveName',
+    'waitForTransaction',
+], [
+    'on',
+    'once',
+    'removeAllListeners',
+    'removeListener'
+], [
+    'listenerCount',
+    'listeners',
+    'network',
+    'chainId',
+]);
+
+
+function Signer() { }
+var signer = new Signer();
+utils.defineProperty(signer, 'provider', provider);
+var setSignerProxyTarget = proxyObject(signer, [
+    'getAddress',
+    'getBalance',
+    'sendTransaction',
+    'signMessage',
+], [ ], [ ]);
+
+
+
 var ethers = {}
+
+utils.defineProperty(ethers, 'provider', provider);
+utils.defineProperty(ethers, 'signer', signer);
 
 var exportUtils = {};
 utils.defineProperty(ethers, 'utils', exportUtils);
@@ -101,27 +194,25 @@ utils.defineProperty(exportUtils, 'getContractAddress', utils.getContractAddress
 
 
 utils.defineProperty(ethers, 'getContract', function(address, abi) {
-    return new ethers.Contract(address, abi, ethers.signer || ethers.provider);
+    return new Contract(address, abi, ethers.signer);
 });
 
 
 utils.defineProperty(ethers, 'getAccount', function() {
-    if (!ethers.signer) { return Promise.resolve(null); }
     return ethers.signer.getAddress();
 });
 
 utils.defineProperty(ethers, 'getNetwork', function() {
-    if (!ethers.provider) { return Promise.resolve(null); }
-    return Promise.resolve(ethers.provider.name);
+    return provider.ready().then(function() {
+        return ethers.provider.name;
+    });
 });
 
 utils.defineProperty(ethers, 'sendTransaction', function(tx) {
-    if (!ethers.signer) { return Promise.reject(new Error('missing account')); }
     return ethers.signer.sendTransaction(tx);
 });
 
 utils.defineProperty(ethers, 'send', function(addressOrName, amountWei) {
-    if (!ethers.signer) { return Promise.reject(new Error('missing account')); }
     return ethers.signer.sendTransaction({
         to: addressOrName,
         value: amountWei
@@ -251,9 +342,8 @@ utils.defineProperty(Handler.prototype, 'sendMessage', function(action, params, 
 });
 
 
-function EthersSigner(handler, provider) {
+function EthersSigner(handler) {
     utils.defineProperty(this, '_handler', handler);
-    utils.defineProperty(this, 'provider', provider);
 }
 
 utils.defineProperty(EthersSigner.prototype, 'getAddress', function() {
@@ -269,7 +359,7 @@ utils.defineProperty(EthersSigner.prototype, 'getAddress', function() {
 utils.defineProperty(EthersSigner.prototype, 'getBalance', function(blockTag) {
     var self = this;
     return this.getAddress().then(function(address) {
-        return self.provider.getBalance(address);
+        return ethers.provider.getBalance(address);
     });
 });
 
@@ -326,9 +416,10 @@ function connectEthers(window) {
                 network = 'ropsten';
             }
 
-            var provider = providers.getDefaultProvider(network);
-            var signer = new EthersSigner(handler, provider);
+            setProviderProxyTarget(providers.getDefaultProvider(network));
+            setSignerProxyTarget(new EthersSigner(handler));
 
+            // @TODO: Make this available as a proxy?
             utils.defineProperty(ethers, 'loadApplication', function(url) {
                 return new Promise(function(resolve, reject) {
                     handler.sendMessage('loadApplication', { url: url }, function(error) {
@@ -337,9 +428,6 @@ function connectEthers(window) {
                     });
                 });
             });
-
-            utils.defineProperty(ethers, 'provider', provider);
-            utils.defineProperty(ethers, 'signer', signer);
 
             resolve(ethers);
         });
@@ -385,15 +473,22 @@ function inject(window) {
             providerBridge.connectWeb3(oldWeb3.currentProvider);
 
             // Expose the Ethers API on injected Web3
-            var provider = new providers.Web3Provider(window.web3.currentProvider, network);
-            utils.defineProperty(ethers, 'provider', provider);
-            utils.defineProperty(ethers, 'signer', provider.getSigner());
+            setProviderProxyTarget(new providers.Web3Provider(window.web3.currentProvider, network));
+            setSignerProxyTarget(provider.getSigner());
 
         // No Ethers, MetaMask, Mist or anything else... Create a generic provider (no signer)
         } else {
             ethersLog('Connected Default Provider: network=' + network);
-            var provider = providers.getDefaultProvider(network);
-            utils.defineProperty(ethers, 'provider', provider);
+            setProviderProxyTarget(providers.getDefaultProvider(network));
+
+            // No private keys to sign with
+            var zeroSigner = new Signer();
+            utils.defineProperty(zeroSigner, 'getAddress', function() { return Promise.resolve(null); });
+            utils.defineProperty(zeroSigner, 'getBalance', function() { return Promise.reject(new Error('no signer')); });
+            utils.defineProperty(zeroSigner, 'sendTransaction', function() { return Promise.reject(new Error('no signer')); });
+            utils.defineProperty(zeroSigner, 'signMessage', function() { return Promise.reject(new Error('no signer')); });
+            setSignerProxyTarget(zeroSigner);
+
             providerBridge.connectEthers(provider);
         }
     }).then(function() {
