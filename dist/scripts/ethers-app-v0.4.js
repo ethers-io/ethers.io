@@ -476,8 +476,9 @@ function inject(window) {
             providerBridge.connectWeb3(oldWeb3.currentProvider);
 
             // Expose the Ethers API on injected Web3
-            setProviderProxyTarget(new providers.Web3Provider(window.web3.currentProvider, network));
-            setSignerProxyTarget(provider.getSigner());
+            var web3Provider = new providers.Web3Provider(window.web3.currentProvider, network)
+            setProviderProxyTarget(web3Provider);
+            setSignerProxyTarget(web3Provider.getSigner());
 
         // No Ethers, MetaMask, Mist or anything else... Create a generic provider (no signer)
         } else {
