@@ -1,0 +1,516 @@
+<html>
+    <head>
+        <title>Wallet</title>
+        <style type="text/css">
+            body {
+                color: #444;
+                font-family: sans-serif;
+                margin: 60px 0;
+            }
+
+            .clearfix {
+                clear: both;
+            }
+
+            a {
+                text-decoration: none;
+                color: #444;
+            }
+
+            div {
+                box-sizing: border-box;
+            }
+
+            body.no-account .content {
+                display: none;
+            }
+
+            body .no-accounts {
+                color: #444;
+                display: none;
+                font-size: 20px;
+                font-style: italic;
+                margin-top: 100px;
+                text-align: center;
+            }
+
+            body.no-account .no-accounts {
+                display: block;
+            }
+
+            .content {
+                margin-left: 50%;
+                transform: translate(-50%);
+                width: 800px;
+            }
+
+            #qrcode {
+            }
+
+            #address {
+                font-family: monospace;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .balance {
+                font-size: 26px;
+            }
+
+            #balance {
+                display: inline-block;
+                font-weight: bold;
+                padding-top: 26px;
+            }
+
+            table.info {
+                width: 100%;
+            }
+
+            table.info td {
+                color: #444;
+                text-align: center;
+            }
+
+            .send .input-container {
+                border: 1px solid #888;
+                padding: 4px 6px;
+            }
+
+            .send .to-container {
+                float: left;
+                width: 420px;
+            }
+
+            .send .amount-container {
+                float: right;
+                width: 320px;
+            }
+
+            .send input {
+                border: none;
+                font-size: 16px;
+                line-height: 20px;
+                outline: none;
+                padding: 4px 0;
+                text-align: center;
+                width: 100%;
+            }
+
+            #send-error {
+                border: 2px solid transparent;
+                color: #a00;
+                float: left;
+                font-size: 16px;
+                line-height: 20px;
+                margin-top: 20px;
+                padding: 10px 0;
+                text-align: center;
+                width: 420px;
+            }
+
+            .send .button {
+                border: 2px solid #222;
+                cursor: pointer;
+                float: right;
+                font-size: 16px;
+                font-weight: bold;
+                line-height: 20px;
+                margin-top: 20px;
+                padding: 10px 0;
+                text-align: center;
+                transition: opacity 0.2s linear;
+                width: 320px;
+            }
+
+            .send .button:hover {
+                background-color: #333;
+                color: #fff;
+            }
+
+            .send .button.disabled {
+                opacity: 0.05;
+                pointer-events: none;
+            }
+
+            body.no-transactions .history {
+                display: none;
+            }
+
+            body .no-history {
+                color: #777;
+                display: none;
+                font-style: italic;
+                padding-top: 30px;
+                text-align: center;
+            }
+
+            body.no-transactions .no-history {
+                display: block;
+            }
+
+            table.history {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            table.history tr:nth-of-type(even) {
+                background-color: #eee;
+            }
+
+            table.history th {
+                font-weight: bold;
+                line-height: 40px;
+                text-align: center;
+            }
+
+            table.history td {
+                font-size: 14px;
+                line-height: 30px;
+            }
+
+            table.history td.hash {
+                font-family: monospace;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            table.history td.date {
+                text-align: center;
+            }
+
+            table.history td.address {
+                font-family: monospace;
+                font-size: 14px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            table.history td.amount {
+                font-family: monospace;
+                font-size: 18px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            table.history td.amount a {
+                color: #3a3;
+            }
+
+            table.history td.amount a.negative {
+                color: #a33;
+            }
+
+            .heading {
+                color: #222;
+                font-weight: bold;
+                font-size: 14px;
+                text-align: center;
+                letter-spacing: 0.2ex;
+            }
+
+
+            .hr {
+                border-bottom: 1px solid #999;
+                margin: 20px 0;
+            }
+
+            .hr.thick {
+                border-bottom: 2px solid #777;
+                margin: 50px 0 20px;
+            }
+
+            .hr.thick.first {
+                margin: 80px 0 50px;
+            }
+
+            .unit {
+                display: inline-block;
+                font-size: 0.7em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <div class="hr first thick"></div>
+            <table class="info"><tr>
+                <td><div id="qrcode"></div></td>
+                <td>
+                    <div id="address"></div>
+                    <div class="balance"><span class="unit">&Xi;&nbsp;</span><span id="balance"></span></div>
+                </td>
+            </tr></table>
+            <div class="hr thick"></div>
+            <div class="heading">SEND TRANSACTION</div>
+            <div class="hr"></div>
+            <div class="send">
+               <div class="clearfix"></div>
+               <div class="input-container to-container">
+                   <input id="send-to" placeholder="to Address..." type="text" />
+               </div>
+               <div class="input-container amount-container">
+                   <input id="send-amount" placeholder="amount of ether..." type="text" />
+               </div>
+               <div class="clearfix"></div>
+               <div id="send-error"></div>
+               <div id="send-button" class="button disabled">SEND</div>
+               <div class="clearfix"></div>
+            </div>
+            <div class="hr thick"></div>
+            <div class="heading">TRANSACTION HISTORY</div>
+            <div class="hr"></div>
+            <table class="history">
+                <tbody>
+                    <tr>
+                        <th>Transaction</th>
+                        <th>Date</th>
+                        <th>Address</th>
+                        <th>Amount</th>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="no-history">no transactions</div>
+            <div class="hr thick"></div>
+        </div>
+        <div class="no-accounts">no account selected</div>
+        <script src="./qrcode.js" type="text/javascript"></script>
+        <script src="https://cdn.ethers.io/scripts/ethers-app-v0.4.js" type="text/javascript"></script>
+        <script>
+            var ethersApp = ethers;
+        </script>
+        <script src="./ethers-providers.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var etherscan = null;
+
+            function short(hex) {
+                return hex.substring(0, 10) + '...' + hex.substring(hex.length - 8);
+            }
+
+            function updateWallet(address) {
+                if (!address) {
+                    document.body.classList.add('no-account');
+                    return;
+                }
+                document.body.classList.remove('no-account');
+
+                // Generate QR Code
+                var qrcode = new QRCode({
+                    color: '#444',
+                    content: ('ethereum:' + ethersApp.getAddress(address)),
+                    ecl: 'L',
+                    height: 200,
+                    width: 200,
+                })
+                document.getElementById('qrcode').innerHTML = qrcode.svg();
+
+                // Set Address
+                document.getElementById('address').textContent = address;
+
+                function round5(text) {
+                    if (text.length <= 5) { return text; }
+                    text = String(Math.round(parseInt(text.substring(0, 6)) / 10));
+                    while (text.length < 5) { text = '0' + text; }
+                    return text;
+                }
+
+                // Get the balance
+                ethersApp.provider.getBalance(address).then(function(balance) {
+                    var comps = ethersApp.formatEther(balance).split('.');
+                    comps[1] = round5(comps[1]);
+                    document.getElementById('balance').textContent = comps.join('.');
+                });
+
+                var nbsp = '\xa0';
+
+                // Fill in the Transaction History
+                var tableBody = document.querySelector('table.history tbody');
+                etherscan.getHistory(address).then(function(history) {
+                    document.body.classList[(history.length === 0) ? 'add': 'remove']('no-transactions');
+
+                    // Mapping of all transactions (by hash)
+                    var txs = {};
+
+                    // Maximum whole and decimal lengths (used to align the decimal place for amount)
+                    var wholeLength = 0, decimalLength = 0;
+                    history.forEach(function(tx) {
+                        txs[tx.hash] = tx;
+
+                        // Sort the transactions by something stable
+                        tx.order = tx.blockNumber * 100000 + tx.transactionIndex;
+
+                        // Compute the whole and decimal length
+                        var comps = ethersApp.formatEther(tx.value).split('.');
+                        wholeLength = Math.max(comps[0].length, wholeLength);
+                        decimalLength = Math.max(comps[1].length, decimalLength);
+                    });
+
+                    // Populate the aligned amounts
+                    history.forEach(function(tx) {
+                        var negative = false;
+                        var comps = ethersApp.formatEther(tx.value).split('.');
+
+                        // Pad (left) with nbsp
+                        while (comps[0].length < wholeLength) { comps[0] = nbsp + comps[0]; }
+
+                        // Longer than 5 characters, so round to 5 characters
+                        comps[1] = round5(comps[1]);
+
+                        // Pad (right) with nbsp
+                        while (comps[1].length < decimalLength) { comps[1] = comps[1] + nbsp; }
+
+                        if (tx.from === address) {
+                            comps[0] = '-' + comps[0];
+                        } else {
+                            comps[0] = nbsp + comps[0];
+                        }
+
+                        tx.ether = comps.join('.') + nbsp;;
+                    });
+
+                    var trs = Array.prototype.slice.call(tableBody.querySelectorAll('tr'));
+
+                    // Remove transactions we do not have for this address and update the padded amount
+                    for (var i = trs.length - 1; i > 0; i--) {
+                        if (!txs[trs[i].getAttribute('data-hash')]) {
+                            trs[i].remove();
+                        }
+                    }
+
+
+                    // Find the position in the history to insert the record before
+                    function findNextTr(tx) {
+                        var trs = Array.prototype.slice.call(tableBody.querySelectorAll('tr'));
+                        var previous = trs[1];
+                        for (var i = 1; i < trs.length; i++) {
+                            var tr = trs[i];
+                            if (tr.getAttribute('data-hash') === tx.hash) { return tr; }
+                            if (parseInt(tr.getAttribute('data-order')) < tx.order) {
+                                return tr;
+                            }
+                            previous = trs[i];
+                        }
+
+                        return null;
+                    }
+
+                    // Add the transactions into the hostory where they belong
+                    history.forEach(function(tx) {
+                        var nextTr = findNextTr(tx);
+                        if (nextTr && nextTr.getAttribute('data-hash') === tx.hash) {
+                            nextTr.querySelector('td.amount a').textContent = tx.ether;
+                            return;
+                        }
+
+                        var tr = document.createElement('tr');
+                        tr.setAttribute('data-hash', tx.hash);
+                        tr.setAttribute('data-order', tx.order);
+
+                        function addTd(content, clazz) {
+                            var td = document.createElement('td');
+                            td.classList.add(clazz);
+                            var a = document.createElement('a');
+                            td.appendChild(a);
+                            a.textContent = content;
+                            tr.appendChild(td);
+
+                            return a;
+                        }
+
+                        var a = addTd(short(tx.hash), 'hash');
+                        a.setAttribute('href', etherscan.baseUrl + '/tx/' + tx.hash);
+                        a.setAttribute('target', '_blank');
+
+                        addTd(tx.blockNumber, 'date');
+
+                        if (tx.to === address) {
+                            var a = addTd(short(tx.from), 'address');
+                            a.setAttribute('href', etherscan.baseUrl + '/address/' + tx.from);
+                        } else {
+                            var a = addTd(short(tx.to), 'address');
+                            a.setAttribute('href', etherscan.baseUrl + '/address/' + tx.to);
+                        }
+                        a.setAttribute('target', '_blank');
+
+                        var a = addTd(tx.ether, 'amount');
+                        if (tx.ether.substring(0, 1) === '-') {
+                            a.classList.add('negative');
+                        }
+
+                        tableBody.insertBefore(tr, nextTr);
+                    });
+                }, function(error) {
+                    console.log('no tx!!', error);
+                    document.body.classList.add('no-transactions');
+
+                    // No history; remove the records
+                    var children = Array.prototype.slice.call(tableBody.children, 1);
+                    for (var i = 0; i < children.length; i++) {
+                        children[i].remove();
+                    }
+                });
+            }
+
+            ethersApp.onready = function() {
+                // Connect to Etherscan for the history
+                etherscan = new ethers.providers.EtherscanProvider(ethersApp.provider.name);
+
+                var currentAddress = null;
+                ethersApp.onaccount = function(address) {
+                    currentAddress = address;
+                    updateWallet(address);
+                };
+
+                ethersApp.provider.on('block', function(blockNumber) {
+                    console.log('Block', blockNumber, currentAddress);
+                    updateWallet(currentAddress);
+                });
+
+                ethersApp.getAccount().then(function(address) {
+                    currentAddress = address;
+                    updateWallet(address);
+                });
+            };
+
+            (function() {
+                var divError = document.getElementById('send-error');
+                var divButton = document.getElementById('send-button');
+                var inputAmount = document.getElementById('send-amount');
+                var inputTo = document.getElementById('send-to');
+
+                function check() {
+                    divError.textContent = '';
+                    divButton.classList.add('disabled');
+                    if (inputTo.value === '') { return; }
+                    try {
+                        ethersApp.getAddress(inputTo.value);
+                    } catch (error) {
+                        divError.textContent = 'invalid address';
+                        return;
+                    }
+                    if (inputAmount.value === '' || inputAmount.value === '.') { return; }
+                    try {
+                        ethersApp.parseEther(inputAmount.value);
+                    } catch (error) {
+                        divError.textContent = 'invalid amount';
+                        return;
+                    }
+                    divButton.classList.remove('disabled');
+                }
+
+                inputAmount.oninput = check;
+                inputTo.oninput = check;
+                check();
+
+                divButton.onclick = function() {
+                    if (divButton.classList.contains('disabled')) { return; }
+                    ethersApp.sendTransaction({
+                        to: inputTo.value,
+                        value: ethersApp.parseEther(inputAmount.value)
+                    });
+                };
+            })();
+        </script>
+    </body>
+</html>
+\
