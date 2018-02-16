@@ -881,7 +881,6 @@
             ethersLog('WARNING: no network detected; defaulting to homestead');
             network = 'homestead';
         }
-
         return network;
     })();;
 
@@ -928,6 +927,8 @@
                         break;
                     }
 
+                    // @TODO: What should we do here? Need to convey to the user that the
+                    //        gas limit is too high (likely contract will throw)
                     if (!found) {
                         throw new Error('invalid transaction gas limit');
                     }
@@ -1127,10 +1128,15 @@
 
                             controller.onbutton = function(el) {
                                 // @TODO: Maybe we should delay sending for 3s, so it can be cancelled?
-                                var controller = navigation.push('notice');
+                                var controller = navigation.push('button');
                                 controller.populate('title', 'Sending Transaction');
                                 controller.populate('blurb', 'Please wait.');
+                                controller.populate('action', 'OK');
+                                controller.enabled = false;
 
+                                controller.onbutton = function() {
+                                    navigation.pop();
+                                };
                                 controller.cancellable = false;
                                 wallet.sendTransaction(tx).then(function(tx) {
                                     self.emit('didSendTransaction', tx);
@@ -1142,7 +1148,8 @@
                                     controller.ondone = function() { resolve(tx); };
                                 }, function(error) {
                                     ethersLog(error);
-                                    navigation.pop();
+                                    controller.populate('blurb', 'Error: ' + error.message);
+                                    controller.enabled = true;
                                 });
                             };
                         });
