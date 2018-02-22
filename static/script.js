@@ -1232,7 +1232,7 @@
 
                 seq = seq.then(function() {
                     navigation.clear();
-                    return wallet.sign(messageData);
+                    return wallet.signMessage(messageData);
                 });
 
                 return seq;
