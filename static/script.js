@@ -1290,6 +1290,8 @@
                     if (content === self.json) {
                         self.controller.remove();
                         delete accounts[self.address];
+                        localStorage.removeItem(accountPrefix + self.address);
+
                         self.emit('didRemove');
                         var controller = navigation.pushNotice(
                             'Account Removed',
@@ -1640,7 +1642,7 @@
                         version: 1,
                     };
                     localStorage.setItem(key, JSON.stringify(data));
-                    accounts[wallet.address] = account;
+                    accounts[account.address] = account;
 
                     wallet.emit('didAddAccount', account);
                 }
