@@ -1,9 +1,8 @@
 'use strict';
 
-// @TODO: Once we collapse the umbrella package, we can simplify this
-var Contract = require('ethers-contracts/contract');
-var providers = require('ethers-providers');
-var utils = require('ethers-utils');
+var Contract = require('ethers/contracts/contract');
+var providers = require('ethers/providers');
+var utils = require('ethers/utils');
 
 var ProviderBridge = require('ethers-web3-bridge');
 
@@ -417,7 +416,14 @@ function connectEthers(window) {
                 network = 'ropsten';
             }
 
-            setProviderProxyTarget(providers.getDefaultProvider(network));
+            if (network.match(/^https?:/)) {
+                setProviderProxyTarget(new providers.JsonRpcProvider(network, {
+                    name: 'test',
+                    chainId: 43
+                }));
+            } else {
+                setProviderProxyTarget(providers.getDefaultProvider(network));
+            }
             setSignerProxyTarget(new EthersSigner(handler));
 
             // @TODO: Make this available as a proxy?
@@ -448,7 +454,11 @@ function connectEthers(window) {
 
 function inject(window) {
     if (window.ethers) { ethers._ethers = window.ethers; }
+    // We are going to migrate off of creating the global "ethers" and
+    // start calling it "app" in the future to help keep the documentation
+    // across the projects and libraries from confusing people.
     window.ethers = ethers;
+    window.app = ethers;
 
     // Keep any existing web3 instance; if we cannot find a container, we will
     // hook it up to our bridge

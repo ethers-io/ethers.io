@@ -855,40 +855,80 @@
 
         switch (location.hostname) {
             case 'ethers.io':
+            case 'ethers.local':
                 network = 'homestead';
                 break;
             case 'rinkeby.ethers.io':
+            case 'rinkeby.ethers.local':
                 network = 'rinkeby';
                 break;
             case 'testnet.ethers.io':
             case 'ropsten.ethers.io':
+            case 'ropsten.ethers.local':
                 network = 'ropsten';
                 break;
             case 'kovan.ethers.io':
+            case 'kovan.ethers.local':
                 network = 'kovan';
+                break;
+            case 'custom-rpc.ethers.io':
+            case 'custom-rpc.ethers.local':
+                network = 'test';
                 break;
             default:
                 break;
         };
-
-        // We allow a simple search-and-replace of the following to change the target network
-        if (('<ETHERS_USE_CUSTOM_NETWORK>').length === 0) {
-            network = JSON.parse('ETHERS_CUSTOM_NETWORK');
-        }
 
         // Fallback onto homestead
         if (!network) {
             ethersLog('WARNING: no network detected; defaulting to homestead');
             network = 'homestead';
         }
+
         return network;
     })();;
 
     defineProperty(ethers, 'versionHash', '<ETHERS_HASH>');
 
-    var provider = ethers.providers.getDefaultProvider(network);
+    var provider = null;
+    if (network === 'test') {
+        (function() {
+            var query = {};
+            location.search.substring(1).split(/&/g).forEach(function(pair) {
+                comps = pair.split('=');
+                if (comps.length != 2) { return; }
+                query[comps[0]] = comps[1];
+            });
 
-    ethersLog('Connected Provider: network=' + provider.name + ', chainId=' + provider.chainId);
+
+            var scheme = 'http';
+            if (query.scheme === 'https') { scheme = 'https'; }
+
+            var host = 'localhost';
+            if (query.host && query.host.match(/^[A-Za-z0-9-.]+$/)) { host = query.host; }
+
+            // A highly restricted subset for now
+            var path = '/';
+            if (query.path && query.path.match(/^[A-Za-z0-9._~\/@+-]*$/)) {
+                path = query.path;
+            }
+
+            network = scheme + '://' + host + ':' + parseInt(query.port || '8545') + path;
+
+            var networkInfo = {
+                chainId: parseInt(query.chainId || 43),
+                ensAddress: (query.ensAddress || undefined),
+                name: 'test'
+            }
+
+            provider = new ethers.providers.JsonRpcProvider(network, networkInfo);
+            ethersLog('Connected JSON-RPC Provider: url=' + network + ', chainId=' + provider.chainId);
+        })();
+    } else {
+        provider = ethers.providers.getDefaultProvider(network);
+        ethersLog('Connected Provider: network=' + provider.name + ', chainId=' + provider.chainId);
+    }
+
 
 
     /**
@@ -1014,7 +1054,7 @@
 
                     // These get filled in after looking up the gas estimate and gas prices
                     gasPrice: 0,
-                    gasLimit: 0,
+                    gasLimit: 1500000,
                 };
 
                 var transactionInfo = getTransactionInfo(tx);

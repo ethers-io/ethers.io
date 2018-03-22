@@ -52,7 +52,7 @@ module.exports = function(grunt) {
     browserify: {
       library: {
         files: {
-          '../dist/scripts/ethers-app-v0.4.js': [ 'ethers-app.js' ],
+          '../dist/scripts/ethers-app-v0.5.js': [ 'ethers-app.js' ],
         },
         options: {
           transform: [
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          '../dist/scripts/ethers-app-v0.4.min.js' : [ '../dist/scripts/ethers-app-v0.4.js' ],
+          '../dist/scripts/ethers-app-v0.5.min.js' : [ '../dist/scripts/ethers-app-v0.5.js' ],
         }
       }
     }

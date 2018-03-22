@@ -1,16 +1,13 @@
 {
   "name": "ethers-app",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Enables Web3 instances to connect using an ethers.js Provider.",
   "main": "index.js",
   "dependencies": {
-    "ethers-contracts": "^2.2.0",
-    "ethers-providers": "^2.1.19",
-    "ethers-utils": "^2.1.11",
+    "ethers": "^3.0.0",
     "ethers-web3-bridge": "0.0.1"
   },
   "devDependencies": {
-    "ethers": "^2.1.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-uglify": "^1.0.1",
