@@ -184,8 +184,10 @@ utils.defineProperty(exportUtils, 'hexlify', utils.hexlify);
 utils.defineProperty(exportUtils, 'id', utils.id);
 utils.defineProperty(exportUtils, 'keccak256', utils.keccak256);
 utils.defineProperty(exportUtils, 'sha256', utils.sha256);
+
 utils.defineProperty(exportUtils, 'solidityKeccak256', utils.solidityKeccak256);
 utils.defineProperty(exportUtils, 'soliditySha256', utils.soliditySha256);
+utils.defineProperty(exportUtils, 'splitSignature', utils.splitSignature);
 
 utils.defineProperty(exportUtils, 'namehash', utils.namehash);
 
@@ -196,7 +198,39 @@ utils.defineProperty(exportUtils, 'getContractAddress', utils.getContractAddress
 
 
 utils.defineProperty(ethers, 'getContract', function(address, abi) {
-    return new Contract(address, abi, ethers.signer);
+    if (arguments.length === 2) {
+        return Promise.resolve(new Contract(address, abi, ethers.signer));
+    }
+
+    if (arguments.length === 1) {
+        if (address.match(/\.json/)) {
+            return Promise.all([
+                providers.Provider.fetchJSON(address),
+                ethers.getNetwork()
+            ]).then(function(result) {
+                var data = result[0];
+                if (data) { data = data[result[1]]; }
+                if (data) {
+                    try {
+                        var address = utils.getAddress(data.address);
+                    } catch (error) {
+                        return Promise.reject(new Error('error loading contract - address=' + data.address));
+                    }
+                    try {
+                        return new Contract(data.address, data.interface, ethers.signer);
+                    } catch (error) {
+                        return Promise.reject(new Error('error loading contract - interface=' + data.interface));
+                    }
+                }
+                return Promise.reject(new Error('could loading interface - ' + address));
+            }, function(error) {
+               return Promise.reject(error);
+            });
+        } else {
+            return Promise.reject(new Error('ABI lookup not implemented yet'));
+        }
+    }
+    throw new Error('must specify filename or address');
 });
 
 
