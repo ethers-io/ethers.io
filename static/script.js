@@ -1689,7 +1689,7 @@
 
                 var controller = navigation.push('button');
                 controller.populate('title', 'Done');
-                controller.populate('blurb', 'Your encrypted account has been added to this browser. Keep you private key safe and do <b>NOT</b> forget your password. We do not keep any data on any server and cannot recover a lost account.', true);
+                controller.populate('blurb', 'Your encrypted account has been added to this browser. Keep your private key safe and do <b>NOT</b> forget your password. We do not keep any data on any server and cannot recover a lost account.', true);
                 controller.populate('action', 'OK');
 
                 controller.onbutton = function() {
